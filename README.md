@@ -1,2 +1,2 @@
 # Java-Practice
-World crime like violations  will be committed in java
+For any stranger seeing this, This is practice code and not FINAL. IM LEARNINNGGGGG
