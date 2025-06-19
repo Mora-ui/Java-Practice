@@ -1,3 +1,5 @@
+package projectsbeginner;
+
 import java.util.Scanner;
 
 class Main {
