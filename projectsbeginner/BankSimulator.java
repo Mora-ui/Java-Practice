@@ -17,7 +17,7 @@ public class BankSimulator {
                 System.out.println("Would you like to: ");
                 System.out.println("1.Create a bank account");
                 System.out.println("2.View your personal bank account");
-                System.out.println("3.Add funds to your bank account");
+                System.out.println("3.Add or remove funds  to your bank account");
                 System.out.println("4.view all accounts");
                 System.out.println("5.exit the program");
                 int userInput = keyboard.nextInt();
@@ -53,14 +53,14 @@ public class BankSimulator {
     }
 
     public static void option1() {
-        System.out.println("What is your name?");
+        System.out.println("\nWhat is your name?");
         String userInput = keyboard.nextLine();
 
         accountNames[accountCount] = userInput;
         accountBalances[accountCount] = 0.0;
         accountCount++;
 
-        System.out.println("Welcome " + userInput + " to your new personal bank account");
+        System.out.println("\nWelcome " + userInput + " to your new personal bank account");
         System.out.println("You have nothing in your account");
         if (accountCount > accountNames.length) {
             System.out.println("You have too many accounts!");
@@ -69,7 +69,7 @@ public class BankSimulator {
     }
 
     public static void option2() {
-        System.out.println("Please enter the name you want to find: ");
+        System.out.println("\nPlease enter the name you want to find: ");
         String userName = keyboard.nextLine();
 
         boolean found = false;
@@ -88,34 +88,52 @@ public class BankSimulator {
     }
 
     public static void option3() {
-        System.out.println("What is your name? ");
+        System.out.println("\nWhat is your name? ");
         String userInputName = keyboard.nextLine();
 
-        boolean found = false;
+        int accountIndex = -1;
 
         for (int i = 0; i < accountCount; i++) {
             if (accountNames[i].equals(userInputName)) {
-                found = true;
-                System.out.println("We found your account: " + accountNames[i]);
-                System.out.println("Your current balance is: $" + accountBalances[i]);
-
-                System.out.println("How much would you like to deposit?");
-                double amount = keyboard.nextDouble();
-                keyboard.nextLine(); // clear newline from input buffer
-
-                if (amount > 0) {
-                    accountBalances[i] += amount;
-                    System.out.println("Deposit successful! New balance: $" + accountBalances[i]);
-                } else {
-                    System.out.println("Invalid amount. Deposit must be greater than 0.");
-                }
-
-                break; // stop searching once we find the account
+                accountIndex = i;
+                break;
             }
         }
 
-        if (!found) {
+        if (accountIndex == -1) {
             System.out.println("Account not found.");
+            return;
+        }
+
+        System.out.println("\nWould you like to add or withdraw?");
+        String answer = keyboard.nextLine();
+
+        if (answer.equalsIgnoreCase("add")) {
+            System.out.println("\nHow much would you like to deposit?");
+            double amount = keyboard.nextDouble();
+            keyboard.nextLine();
+
+            if (amount > 0) {
+                accountBalances[accountIndex] += amount;
+                System.out.println("Deposit successful! New balance: $" + accountBalances[accountIndex]);
+            } else {
+                System.out.println("Invalid amount. Deposit must be greater than 0.");
+            }
+
+        } else if (answer.equalsIgnoreCase("withdraw")) {
+            System.out.println("\nHow much would you like to withdraw?");
+            double amount = keyboard.nextDouble();
+            keyboard.nextLine();
+
+            if (amount > 0 && amount <= accountBalances[accountIndex]) {
+                accountBalances[accountIndex] -= amount;
+                System.out.println("Withdrawal successful! New balance: $" + accountBalances[accountIndex]);
+            } else {
+                System.out.println("Invalid amount or insufficient funds.");
+            }
+
+        } else {
+            System.out.println("Invalid option. Please type 'add' or 'withdraw'.");
         }
     }
 
